@@ -6,7 +6,7 @@
 
         <variable
             name="mainViewModel"
-            type="husaynhakeem.io.tictactoe_mvvm.viewmodel.MainViewModel" />
+            type="ksu.team4.incomm.viewmodel.MainViewModel" />
     </data>
 
     <android.support.v7.widget.GridLayout
@@ -31,6 +31,10 @@
             android:layout_width = "match_parent"
             android:layout_height = "wrap_content"
             android:scrollbars = "horizontal"
+            app:layout_column="0"
+            app:layout_row="0"
+            app:layoutManager="@{mainViewModel.accountListLayoutMan}"
+            app:adapter="@{mainViewModel.rvAdapter}"
             />
 
     </android.support.v7.widget.GridLayout>
