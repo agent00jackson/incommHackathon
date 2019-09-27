@@ -53,6 +53,28 @@ namespace IncommChallengeWpf.REST
             return account;
         }
 
+        public async void NewTransaction(IncommAcct acct, int amt, string desc, string counterParty) 
+        {
+            var date = DateTime.Now.ToString("s");
+            var txJson = new JObject(
+                    new JProperty("counterParty", counterParty), 
+                    new JProperty("type", amt < 0 ? "debit" : "credit"),
+                    new JProperty("description", desc),
+                    new JProperty("amount", Math.Abs(amt)),
+                    new JProperty("date", date)
+                );
+            client.DefaultRequestHeaders
+                .Accept
+                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var content = new StringContent(txJson.ToString(Newtonsoft.Json.Formatting.None), Encoding.UTF8,
+                                    "application/json");
+            var result = await client.PostAsync($"{BaseURL}accounts/{acct.Id}/transactions", content);
+            if (true)
+                Debug.WriteLine("y");
+            var response = result.Content.ReadAsStringAsync().Result;
+            Debug.WriteLine(response);
+        }
+
         public async void NewAccount(int balance)
         {
             var content = new StringContent("");
