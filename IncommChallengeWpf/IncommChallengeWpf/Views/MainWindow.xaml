@@ -82,7 +82,7 @@
             <m:Map Grid.Row="0" 
                    CredentialsProvider="AqVLkbhO-5hpa1OYk1YKKZkdV7OMgF3pVVO7qaGD4KqVnKjFUY7U5FuQwrTFBZya"
                    Center="{Binding OurPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                   ZoomLevel="15" 
+                   ZoomLevel="15"
                    x:Name="myMap"/>
             <StackPanel
                 Orientation="Horizontal"

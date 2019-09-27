@@ -33,6 +33,15 @@ namespace IncommChallengeWpf.ViewModels
             {
                 _selectedAccount = value;
                 OnPropertyChanged("SelectedAccount");
+                OnNewPushpin(EventArgs.Empty);
+            }
+        }
+
+        public List<Pushpin> Pushpins
+        {
+            get
+            {
+                return new List<Pushpin>();
             }
         }
 
@@ -51,6 +60,7 @@ namespace IncommChallengeWpf.ViewModels
         void AccountsRefreshed(object sender, EventArgs e)
         {
             OnPropertyChanged("Accounts");
+            
         }
         
         void PositionChanged(object sender, EventArgs e)
@@ -60,6 +70,17 @@ namespace IncommChallengeWpf.ViewModels
             _ourLocation = new Location(lat, longi);
             OnPropertyChanged("OurPosition");
         }
+
+        public event EventHandler NewPushpin;
+        protected virtual void OnNewPushpin(EventArgs e)
+        {
+            EventHandler handler = NewPushpin;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
         public ICommand RefreshAccounts
         {
             get => new DelegateCommand(this.model.RefreshAccounts);
