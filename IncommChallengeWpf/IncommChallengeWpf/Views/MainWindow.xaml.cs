@@ -27,6 +27,16 @@ namespace IncommChallengeWpf
         {
             InitializeComponent();
             this.DataContext = viewModel;
+            viewModel.NewPushpin += OnNewPushpin;
+        }
+
+        public void OnNewPushpin(object sender, EventArgs e)
+        {
+            myMap.Children.Clear();
+            foreach(var p in viewModel.Pushpins)
+            {
+                myMap.Children.Add(p);
+            }
         }
     }
 }

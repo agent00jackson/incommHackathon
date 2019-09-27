@@ -82,7 +82,7 @@
             <m:Map Grid.Row="0" 
                    CredentialsProvider="***REMOVED***"
                    Center="{Binding OurPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                   ZoomLevel="15" 
+                   ZoomLevel="15"
                    x:Name="myMap"/>
             <StackPanel
                 Orientation="Horizontal"
