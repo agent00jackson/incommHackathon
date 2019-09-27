@@ -12,26 +12,49 @@ namespace IncommChallengeWpf.DataTypes
     {
         static Dictionary<string, string> Images = new Dictionary<string, string>{
             { "cfa", "/IncommChallengeWpf;component/Resources/Images/cfa.png"},
-            { "sbux", "/IncommChallengeWpf;component/Resources/Images/cfa.png"}
+            { "sbux", "/IncommChallengeWpf;component/Resources/Images/sbux.jpg"}
         };
         static Dictionary<string, string> FullNames = new Dictionary<string, string>
         {
             {"cfa", "Chick-fil-A"},
             {"sbux", "Starbucks"}
         };
+        static List<string> AccountTypes = new List<string>
+        {
+            "cfa",
+            "sbux"
+        };
 
         public string ImgSrc
         {
             get => Images[AcctType];
         }
-        public readonly string AcctType;
+        public string AcctType
+        {
+            get
+            {
+                int val = 0;
+                foreach (char c in Id)
+                    val += (char)c;
+                val = val % AccountTypes.Count();
+                return AccountTypes[val];
+            }
+        }
         public string Name
         {
             get => FullNames[AcctType];
         }
-        public int Balance
+        public string Balance
         {
-            get => IncommAccount.Balance;
+            get
+            {
+                double ret = (double)IncommAccount.Balance / 100;
+                return string.Format("${0:0.00}", ret);
+            }
+        }
+        public string Id
+        {
+            get => IncommAccount.Id;
         }
 
         private List<RobustTransaction> _transactions = new List<RobustTransaction>();
@@ -42,11 +65,13 @@ namespace IncommChallengeWpf.DataTypes
         public void RefreshTransactions()
         {
             var api = IncommApi.Instance;
-            api.GetTransactions(IncommAccount.Id).ContinueWith((txs) =>
+            api.GetTransactions(IncommAccount.Id).ContinueWith(async (txs) =>
             {
-                foreach(var t in txs.Result)
+                var res = await txs;
+                foreach(var t in res)
                 {
                     _transactions.Add(new RobustTransaction(t));
+                    OnPropertyChanged("SelectedAccount.Transactions");
                 }
             });
 
@@ -56,7 +81,6 @@ namespace IncommChallengeWpf.DataTypes
         public RobustAccount(IncommAcct IA)
         {
             IncommAccount = IA;
-            AcctType = "cfa";
             RefreshTransactions();
         }
     }
