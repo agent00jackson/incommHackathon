@@ -66,6 +66,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataTypes\IncommTransactions.cs" />
     <Compile Include="DataTypes\IncommAcct.cs" />
     <Compile Include="REST\IncommApi.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
