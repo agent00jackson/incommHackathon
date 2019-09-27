@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using IncommChallengeWpf.DataTypes;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace IncommChallengeWpf.REST
 {
@@ -36,17 +37,43 @@ namespace IncommChallengeWpf.REST
             var jResponse = JObject.Parse(responseText)["accounts"];
 
             List<IncommAcct> accts = new List<IncommAcct>();
-            foreach(var a in jResponse)
-            {
-                string id = (string)a["id"];
-                string owner = a["owner"]?.Value<string>() ?? "";//if null then empty
-                int balance = (int)a["balance"];
-
-                var account = new IncommAcct(id, owner, balance);
-                accts.Add(account);
-            }
+            foreach (var a in jResponse)
+                accts.Add(ParseAcctJson(a));
 
             return accts;
+        }
+
+        private IncommAcct ParseAcctJson(JToken a)
+        {
+            string id = (string)a["id"];
+            string owner = a["owner"]?.Value<string>() ?? "";//if null then empty
+            int balance = (int)a["balance"];
+
+            var account = new IncommAcct(id, owner, balance);
+            return account;
+        }
+
+        public async void NewAccount(int balance)
+        {
+            var content = new StringContent("");
+            var result = await client.PostAsync($"{BaseURL}accounts", content);
+            var resultText = await result.Content.ReadAsStringAsync();
+            var jResponse = JObject.Parse(resultText);
+            var acct = ParseAcctJson(jResponse);
+            UpdateBalance(acct, balance);
+        }
+
+        public async void UpdateBalance(IncommAcct acct, int amt)
+        {
+            var content = new StringContent("{\"balance\":" + amt.ToString() + "}", Encoding.UTF8,
+                                    "application/json");
+            client.DefaultRequestHeaders
+                .Accept
+                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var result = await client.PutAsync($"{BaseURL}accounts/updateBalance/{acct.Id}", content);
+            var response = result.Content.ReadAsStringAsync().Result;
+            Debug.WriteLine(response);
         }
 
         public async Task<List<IncommTransaction>> GetTransactions(string accountId)
