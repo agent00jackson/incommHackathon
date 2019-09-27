@@ -12,7 +12,7 @@ namespace IncommChallengeWpf.Models
     public class MainModel
     {
         public List<RobustAccount> Accounts = new List<RobustAccount>();
-        private IncommApi incomm = new IncommApi();
+        private IncommApi incomm = IncommApi.Instance;
 
         public MainModel()
         {
@@ -35,9 +35,9 @@ namespace IncommChallengeWpf.Models
             {
                 foreach(var a in aTask.Result)
                 {
-                    Accounts.Add(new RobustAccount());
-                    Accounts.Add(new RobustAccount());
-                    Accounts.Add(new RobustAccount());
+                    Accounts.Add(new RobustAccount(a));
+                    Accounts.Add(new RobustAccount(a));
+                    Accounts.Add(new RobustAccount(a));
                     OnAccountsRefreshed(EventArgs.Empty);
                 }
             });

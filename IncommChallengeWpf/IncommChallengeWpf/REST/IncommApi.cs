@@ -12,11 +12,18 @@ using Newtonsoft.Json.Linq;
 namespace IncommChallengeWpf.REST
 {
     public class IncommApi
-    {
+
+    { 
+        private static IncommApi _instance = new IncommApi();
+        public static IncommApi Instance
+        {
+            get => _instance;
+        }
+
         HttpClient client = new HttpClient();
         private readonly string BaseURL = @"https://us-central1-incomm-hackathon-api.cloudfunctions.net/api/";
         private readonly string ApiKey;
-        public IncommApi(string apiKey = "ufBsC0wSbhTkLrB2jUdL")
+        private IncommApi(string apiKey = "ufBsC0wSbhTkLrB2jUdL")
         {
             this.ApiKey = apiKey;
             client.DefaultRequestHeaders.Add("X-API-Key", ApiKey);
@@ -42,13 +49,13 @@ namespace IncommChallengeWpf.REST
             return accts;
         }
 
-        public async Task<List<IncommTransactions>> GetTransactionss(string accountId)
+        public async Task<List<IncommTransaction>> GetTransactions(string accountId)
         {
             var requestResult = await client.GetAsync($"{BaseURL}/accounts/{accountId}/transactions");
             var responseText = await requestResult.Content.ReadAsStringAsync();
                 var jResponse = JArray.Parse(responseText);
 
-            List<IncommTransactions> transactions = new List<IncommTransactions>();
+            List<IncommTransaction> transactions = new List<IncommTransaction>();
             foreach (var t in jResponse)
             {
                 string id = (string)t["id"];
@@ -59,7 +66,7 @@ namespace IncommChallengeWpf.REST
                 int amount = (int)t["amount"];
                 string date = (string)t["date"];
 
-                var account = new IncommTransactions(id, counterParty, type, status, description, amount, date);
+                var account = new IncommTransaction(id, counterParty, type, status, description, amount, date);
                 transactions.Add(account);
             }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IncommChallengeWpf.DataTypes
 {
-    public class IncommTransactions
+    public class IncommTransaction
     {
         public readonly string Id;
         public readonly string CounterParty;
@@ -16,7 +16,7 @@ namespace IncommChallengeWpf.DataTypes
         public readonly int Amount;
         public readonly string Date;
 
-        public IncommTransactions(string id, string counterParty, string type, string status, string description, int amount, string date)
+        public IncommTransaction(string id, string counterParty, string type, string status, string description, int amount, string date)
         {
             Id = id;
             CounterParty = counterParty;
@@ -34,7 +34,7 @@ namespace IncommChallengeWpf.DataTypes
 
         public override bool Equals(object obj)
         {
-            if (obj is IncommTransactions other)
+            if (obj is IncommTransaction other)
             {
                 return Id == other.Id &&
                     CounterParty == other.CounterParty &&
