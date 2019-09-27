@@ -39,8 +39,6 @@ namespace IncommChallengeWpf.Models
                 foreach(var a in aTask.Result)
                 {
                     Accounts.Add(new RobustAccount(a));
-                    Accounts.Add(new RobustAccount(a));
-                    Accounts.Add(new RobustAccount(a));
                     OnAccountsRefreshed(EventArgs.Empty);
                 }
             });

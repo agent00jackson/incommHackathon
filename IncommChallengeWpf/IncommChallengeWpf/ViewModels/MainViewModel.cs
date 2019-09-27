@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Device.Location;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace IncommChallengeWpf.ViewModels
 {
@@ -33,10 +34,11 @@ namespace IncommChallengeWpf.ViewModels
             }
         }
 
-        private GeoCoordinate OurPosition
+        private Location _ourLocation;
+        public Location OurPosition
         {
-            get => model.Watcher.Position.Location;
-            
+            get => _ourLocation;
+            set => _ourLocation = value;
         }
         public MainViewModel()
         {
@@ -51,6 +53,9 @@ namespace IncommChallengeWpf.ViewModels
 
         void PositionChanged(object sender, EventArgs e)
         {
+            double lat = model.Watcher.Position.Location.Latitude;
+            double longi = model.Watcher.Position.Location.Longitude;
+            _ourLocation = new Location(lat, longi);
             OnPropertyChanged("OurPosition");
         }
     }
