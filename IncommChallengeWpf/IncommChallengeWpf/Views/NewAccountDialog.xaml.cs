@@ -25,5 +25,10 @@ namespace IncommChallengeWpf.Views
             InitializeComponent();
             this.DataContext = new NewAccountViewModel();
         }
+
+        private void BtnDialogOk_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
     }
 }
