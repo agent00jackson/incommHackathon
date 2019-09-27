@@ -21,6 +21,17 @@ namespace IncommChallengeWpf.ViewModels
             }
         }
 
+        private RobustAccount _selectedAccount;
+        public RobustAccount SelectedAccount
+        {
+            get => _selectedAccount;
+            set
+            {
+                _selectedAccount = value;
+                OnPropertyChanged("SelectedAccount");
+            }
+        }
+
         public MainViewModel()
         {
             model.AccountsRefreshed += new EventHandler(AccountsRefreshed);

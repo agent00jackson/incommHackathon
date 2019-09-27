@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace IncommChallengeWpf.DataTypes
 {
-    class ObservableObject : INotifyPropertyChanged
+    public class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
