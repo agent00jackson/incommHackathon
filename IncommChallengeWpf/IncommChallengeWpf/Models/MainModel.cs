@@ -31,12 +31,12 @@ namespace IncommChallengeWpf.Models
 
         public void RefreshAccounts()
         {
-            incomm.GetAccounts().ContinueWith((aTask) =>
+            incomm.GetAccounts().ContinueWith(async (aTask) =>
             {
-                foreach(var a in aTask.Result)
+                Accounts.Clear();
+                var res = await aTask;
+                foreach(var a in res)
                 {
-                    Accounts.Add(new RobustAccount(a));
-                    Accounts.Add(new RobustAccount(a));
                     Accounts.Add(new RobustAccount(a));
                     OnAccountsRefreshed(EventArgs.Empty);
                 }
