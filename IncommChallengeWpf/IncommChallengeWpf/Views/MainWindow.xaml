@@ -12,14 +12,16 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Column="0">
+        <ListView Grid.Column="0"
+                  ItemsSource="{Binding Accounts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding ImageSrc}"
-                               Width="60"
-                               Height="60"
-                               VerticalAlignment="Center"/>
+                        <Image Source="{Binding ImgSrc}"
+                               Width="40"
+                               Height="40"
+                               VerticalAlignment="Center"
+                               Stretch="Fill"/>
                         <Label Content="{Binding Name}"
                                VerticalAlignment="Center"/>
                     </StackPanel>
