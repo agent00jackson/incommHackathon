@@ -16,10 +16,10 @@ namespace IncommChallengeWpf.REST
         HttpClient client = new HttpClient();
         private readonly string BaseURL = @"https://us-central1-incomm-hackathon-api.cloudfunctions.net/api/";
         private readonly string ApiKey;
-        public IncommApi(string apiKey = "")
+        public IncommApi(string apiKey = "ufBsC0wSbhTkLrB2jUdL")
         {
             this.ApiKey = apiKey;
-            client.DefaultRequestHeaders.Add("X-API-Key", "ufBsC0wSbhTkLrB2jUdL");
+            client.DefaultRequestHeaders.Add("X-API-Key", ApiKey);
         }
 
         public async Task<List<IncommAcct>> GetAccounts()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IncommChallengeWpf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,11 @@ namespace IncommChallengeWpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainViewModel viewModel = new MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
     }
 }
