@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Device.Location;
 
 namespace IncommChallengeWpf.ViewModels
 {
@@ -32,14 +33,25 @@ namespace IncommChallengeWpf.ViewModels
             }
         }
 
+        private GeoCoordinate OurPosition
+        {
+            get => model.Watcher.Position.Location;
+            
+        }
         public MainViewModel()
         {
             model.AccountsRefreshed += new EventHandler(AccountsRefreshed);
+            model.Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(PositionChanged);
         }
 
         void AccountsRefreshed(object sender, EventArgs e)
         {
             OnPropertyChanged("Accounts");
+        }
+
+        void PositionChanged(object sender, EventArgs e)
+        {
+            OnPropertyChanged("OurPosition");
         }
     }
 }
