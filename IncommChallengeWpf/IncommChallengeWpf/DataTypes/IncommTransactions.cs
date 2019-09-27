@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IncommChallengeWpf.DataTypes
 {
-    public class IncommTransactions 
+    public class IncommTransactions
     {
         public readonly string Id;
         public readonly string CounterParty;
@@ -16,7 +16,7 @@ namespace IncommChallengeWpf.DataTypes
         public readonly int Amount;
         public readonly string Date;
 
-        public IncommTransactions(string id, string counterParty, string type, string status, string description, int amount, string date) 
+        public IncommTransactions(string id, string counterParty, string type, string status, string description, int amount, string date)
         {
             Id = id;
             CounterParty = counterParty;
@@ -31,36 +31,19 @@ namespace IncommChallengeWpf.DataTypes
         {
             return Id.GetHashCode() + CounterParty.GetHashCode() + Type.GetHashCode() + Status.GetHashCode() + Amount + Date.GetHashCode();
         }
-    }
-    
-    public class IncommAcct
-    {
-        public readonly string Id;
-        public readonly string Owner;
-        public readonly int Balance;
-
-        public IncommAcct(string id, string owner, int balance)
-        {
-            Id = id;
-            Owner = owner;
-            Balance = balance;
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode() + Owner.GetHashCode() + Balance;
-        }
 
         public override bool Equals(object obj)
         {
-            if(obj is IncommAcct other)
+            if (obj is IncommTransactions other)
             {
                 return Id == other.Id &&
-                    Owner == other.Owner &&
-                    Balance == other.Balance;
+                    CounterParty == other.CounterParty &&
+                    Type == other.Type && Status == other.Status && Description == other.Description &&
+                    Amount == other.Amount && Date == other.Date;
             }
 
             return false;
         }
     }
+
 }
