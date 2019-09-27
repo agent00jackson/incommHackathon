@@ -41,5 +41,29 @@ namespace IncommChallengeWpf.REST
 
             return accts;
         }
+
+        public async Task<List<IncommTransactions>> GetTransactionss(string accountId)
+        {
+            var requestResult = await client.GetAsync($"{BaseURL}/accounts/{accountId}/transactions");
+            var responseText = await requestResult.Content.ReadAsStringAsync();
+                var jResponse = JArray.Parse(responseText);
+
+            List<IncommTransactions> transactions = new List<IncommTransactions>();
+            foreach (var t in jResponse)
+            {
+                string id = (string)t["id"];
+                string counterParty = t["counterParty"]?.Value<string>() ?? "";//if null then empty
+                string type = (string)t["type"];
+                string status = (string)t["status"];
+                string description = (string)t["description"];
+                int amount = (int)t["amount"];
+                string date = (string)t["date"];
+
+                var account = new IncommTransactions(id, counterParty, type, status, description, amount, date);
+                transactions.Add(account);
+            }
+
+            return transactions;
+        }
     }
 }
