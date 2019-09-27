@@ -1,6 +1,7 @@
 ﻿using IncommChallengeWpf.DataTypes;
 using IncommChallengeWpf.REST;
 using System;
+using System.Device.Location;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace IncommChallengeWpf.Models
     {
         public List<RobustAccount> Accounts = new List<RobustAccount>();
         private IncommApi incomm = IncommApi.Instance;
+        public GeoCoordinateWatcher Watcher = new GeoCoordinateWatcher();
 
         public MainModel()
         {
             RefreshAccounts();
+            Watcher.TryStart(false, TimeSpan.FromMilliseconds(1000));
         }
 
         public event EventHandler AccountsRefreshed;
