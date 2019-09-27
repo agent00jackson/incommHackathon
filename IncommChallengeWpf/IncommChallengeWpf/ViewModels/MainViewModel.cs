@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 using System.Device.Location;
 using Microsoft.Maps.MapControl.WPF;
 using System.Windows.Input;
+using BingMapsSDSToolkit.GeocodeDataflowAPI;
 
 namespace IncommChallengeWpf.ViewModels
 {
     class MainViewModel : ObservableObject
     {
+        private readonly string BingKey = "***REMOVED***";
         public readonly MainModel model = new MainModel();
         public ObservableCollection<RobustAccount> Accounts
         {
@@ -33,15 +35,43 @@ namespace IncommChallengeWpf.ViewModels
             {
                 _selectedAccount = value;
                 OnPropertyChanged("SelectedAccount");
-                OnNewPushpin(EventArgs.Empty);
+                UpdatePushpins();
             }
         }
 
+        async void UpdatePushpins()
+        {
+            pushpins.Clear();
+            var manager = new BatchGeocodeManager();
+            var feed = new GeocodeFeed()
+            {
+                Entities = new List<GeocodeEntity>()
+            };
+
+            foreach (var t in SelectedAccount.Transactions)
+                feed.Entities.Add(new GeocodeEntity(t.Description));
+
+            var results = await manager.Geocode(feed, BingKey);
+
+            if (results.Succeeded == null)
+                return;
+
+            foreach(var r in results.Succeeded.Entities)
+            {
+                var place = r.GeocodeResponse.FirstOrDefault()?.GeocodePoint.FirstOrDefault();
+                var pp = new Pushpin();
+                pp.Location = new Location(place.Latitude, place.Longitude);
+                pushpins.Add(pp);
+            }
+            OnNewPushpin(EventArgs.Empty);
+        }
+
+        private List<Pushpin> pushpins = new List<Pushpin>();
         public List<Pushpin> Pushpins
         {
             get
             {
-                return new List<Pushpin>();
+                return pushpins;
             }
         }
 
