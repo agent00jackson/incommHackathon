@@ -12,10 +12,14 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0"
-                   LastChildFill="False">
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
             <ListView
-                DockPanel.Dock="Top"
+                Grid.Row="0"
                 HorizontalAlignment="Stretch"
                 SelectedItem="{Binding SelectedAccount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemsSource="{Binding Accounts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
@@ -33,19 +37,26 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button DockPanel.Dock="Bottom"
-                    Height="40">
+            <Button Grid.Row="1"
+                    Height="40"
+                    Command="{Binding RefreshAccounts}">
+                Refresh Accounts
+            </Button>
+            <Button Grid.Row="2"
+                    Height="40"
+                    Command="{Binding NewAccount}">
                 Add Account
             </Button>
-        </DockPanel>
+        </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <ListView
-                Grid.Row="1"
+                Grid.Row="2"
                 ItemsSource="{Binding SelectedAccount.Transactions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -73,8 +84,22 @@
                    Center="{Binding OurPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                    ZoomLevel="15" 
                    x:Name="myMap"/>
+            <StackPanel
+                Orientation="Horizontal"
+                Grid.Row="1">
+                <Label Content="Account: " />
+                <Label Content="{Binding SelectedAccount.Id}" />
+                <Label Content=" Balance: "/>
+                <Label Content="{Binding SelectedAccount.Balance, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Padding="10,0">
+                    New Transaction
+                </Button>
+                <Button
+                    Padding="10,0">
+                    Refresh Account
+                </Button>
+            </StackPanel>
         </Grid>
-        
-        
     </Grid>
 </Window>

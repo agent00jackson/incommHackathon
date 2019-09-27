@@ -1,5 +1,6 @@
 ﻿using IncommChallengeWpf.DataTypes;
 using IncommChallengeWpf.Models;
+using IncommChallengeWpf.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Device.Location;
 using Microsoft.Maps.MapControl.WPF;
+using System.Windows.Input;
 
 namespace IncommChallengeWpf.ViewModels
 {
@@ -50,7 +52,7 @@ namespace IncommChallengeWpf.ViewModels
         {
             OnPropertyChanged("Accounts");
         }
-
+        
         void PositionChanged(object sender, EventArgs e)
         {
             double lat = model.Watcher.Position.Location.Latitude;
@@ -58,5 +60,23 @@ namespace IncommChallengeWpf.ViewModels
             _ourLocation = new Location(lat, longi);
             OnPropertyChanged("OurPosition");
         }
+        public ICommand RefreshAccounts
+        {
+            get => new DelegateCommand(this.model.RefreshAccounts);
+        }
+
+        public ICommand RefreshTransactions
+        {
+            get => new DelegateCommand(SelectedAccount.RefreshTransactions);
+        }
+
+        public ICommand NewAccount {get => new DelegateCommand(() =>
+        {
+            var dialog = new NewAccountDialog();
+            if(dialog.ShowDialog() == true)
+            {
+                this.model.RefreshAccounts();
+            }
+        });}
     }
 }
