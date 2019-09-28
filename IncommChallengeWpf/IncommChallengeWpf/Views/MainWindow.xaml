@@ -80,7 +80,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             <m:Map Grid.Row="0" 
-                   CredentialsProvider="***REMOVED***"
+                   CredentialsProvider="**REMOVED**"
                    Center="{Binding OurPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                    ZoomLevel="15"
                    x:Name="myMap"/>
