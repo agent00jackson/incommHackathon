@@ -65,6 +65,7 @@ namespace IncommChallengeWpf.DataTypes
         public void RefreshTransactions()
         {
             var api = IncommApi.Instance;
+            _transactions.Clear();
             api.GetTransactions(IncommAccount.Id).ContinueWith(async (txs) =>
             {
                 var res = await txs;

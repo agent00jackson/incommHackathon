@@ -12,12 +12,16 @@ using System.Device.Location;
 using Microsoft.Maps.MapControl.WPF;
 using System.Windows.Input;
 using BingMapsSDSToolkit.GeocodeDataflowAPI;
+using GoogleMapsApi.Entities.PlacesFind.Request;
+using GoogleMapsApi.Entities.PlacesFind.Response;
+using GoogleMapsApi;
 
 namespace IncommChallengeWpf.ViewModels
 {
     class MainViewModel : ObservableObject
     {
         private readonly string BingKey = "***REMOVED***";
+        private readonly string GoogleKey = "***REMOVED***";
         public readonly MainModel model = new MainModel();
         public ObservableCollection<RobustAccount> Accounts
         {
@@ -42,28 +46,25 @@ namespace IncommChallengeWpf.ViewModels
         async void UpdatePushpins()
         {
             pushpins.Clear();
-            var manager = new BatchGeocodeManager();
-            var feed = new GeocodeFeed()
-            {
-                Entities = new List<GeocodeEntity>()
-            };
-
+            List<PlacesFindResponse> results = new List<PlacesFindResponse>();
             foreach (var t in SelectedAccount.Transactions)
-                feed.Entities.Add(new GeocodeEntity(t.Description));
-
-            var results = await manager.Geocode(feed, BingKey);
-
-            if (results.Succeeded == null)
-                return;
-
-            pushpins.Clear();
-            foreach(var r in results.Succeeded.Entities)
             {
-                var place = r.GeocodeResponse.FirstOrDefault()?.GeocodePoint.FirstOrDefault();
+                var request = new PlacesFindRequest()
+                {
+                    ApiKey = GoogleKey,
+                    Input = t.Description,
+                    InputType = GoogleMapsApi.Entities.PlacesFind.Request.InputType.TextQuery,
+                    Fields = "geometry"
+                };
+
+                var ans = await GoogleMaps.PlacesFind.QueryAsync(request);
+
+                var place = ans.Candidates?.FirstOrDefault()?.Geometry?.Location;
                 var pp = new Pushpin();
-                pp.Location = new Location(place.Latitude, place.Longitude);
+                pp.Location = new Location(place?.Latitude ?? 0, place?.Longitude ?? 0);
                 pushpins.Add(pp);
             }
+
             OnNewPushpin(EventArgs.Empty);
         }
 

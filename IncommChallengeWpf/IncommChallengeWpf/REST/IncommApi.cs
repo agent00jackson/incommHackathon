@@ -55,6 +55,7 @@ namespace IncommChallengeWpf.REST
 
         public async void NewTransaction(string id, int amt, string desc, string counterParty) 
         {
+            //Load date in internet format, required for API
             var date = DateTime.Now.ToString("s");
             var txJson = new JObject(
                     new JProperty("counterParty", counterParty), 
@@ -63,16 +64,16 @@ namespace IncommChallengeWpf.REST
                     new JProperty("amount", Math.Abs(amt)),
                     new JProperty("date", date)
                 );
+
+            //Set header to accept json
             client.DefaultRequestHeaders
                 .Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
             var content = new StringContent(txJson.ToString(Newtonsoft.Json.Formatting.None), Encoding.UTF8,
                                     "application/json");
             var result = await client.PostAsync($"{BaseURL}accounts/{id}/transactions", content);
-            if (true)
-                Debug.WriteLine("y");
             var response = result.Content.ReadAsStringAsync().Result;
-            Debug.WriteLine(response);
         }
 
         public async void NewAccount(int balance)
