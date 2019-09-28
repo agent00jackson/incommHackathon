@@ -20,8 +20,8 @@ namespace IncommChallengeWpf.ViewModels
 {
     class MainViewModel : ObservableObject
     {
-        private readonly string BingKey = "***REMOVED***";
-        private readonly string GoogleKey = "***REMOVED***";
+        private readonly string BingKey = "**REMOVED**";
+        private readonly string GoogleKey = "**REMOVED**";
         public readonly MainModel model = new MainModel();
         public ObservableCollection<RobustAccount> Accounts
         {
