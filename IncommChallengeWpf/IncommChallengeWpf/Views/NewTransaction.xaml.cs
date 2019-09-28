@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IncommChallengeWpf.DataTypes;
+using IncommChallengeWpf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,15 @@ namespace IncommChallengeWpf.Views
     /// </summary>
     public partial class NewTransaction : Window
     {
-        public NewTransaction()
+        public NewTransaction(RobustAccount account)
         {
             InitializeComponent();
+            this.DataContext = new NewTransactionViewModel(account);
+        }
+
+        private void BtnDialogOk_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
         }
     }
 }

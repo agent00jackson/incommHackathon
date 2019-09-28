@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\NewAccountViewModel.cs" />
+    <Compile Include="ViewModels\NewTransactionViewModel.cs" />
     <Compile Include="Views\NewAccountDialog.xaml.cs">
       <DependentUpon>NewAccountDialog.xaml</DependentUpon>
     </Compile>

@@ -56,6 +56,7 @@ namespace IncommChallengeWpf.ViewModels
             if (results.Succeeded == null)
                 return;
 
+            pushpins.Clear();
             foreach(var r in results.Succeeded.Entities)
             {
                 var place = r.GeocodeResponse.FirstOrDefault()?.GeocodePoint.FirstOrDefault();
@@ -129,5 +130,17 @@ namespace IncommChallengeWpf.ViewModels
                 this.model.RefreshAccounts();
             }
         });}
+
+        public ICommand NewTransaction
+        {
+            get => new DelegateCommand(() =>
+            {
+                var dialog = new NewTransaction(SelectedAccount);
+                if (dialog.ShowDialog() == true)
+                {
+                    SelectedAccount.RefreshTransactions();
+                }
+            });
+        }
     }
 }

@@ -92,6 +92,7 @@
                 <Label Content=" Balance: "/>
                 <Label Content="{Binding SelectedAccount.Balance, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
+                    Command="{Binding NewTransaction}"
                     Padding="10,0">
                     New Transaction
                 </Button>

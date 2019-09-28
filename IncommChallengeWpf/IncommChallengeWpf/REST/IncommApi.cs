@@ -53,7 +53,7 @@ namespace IncommChallengeWpf.REST
             return account;
         }
 
-        public async void NewTransaction(IncommAcct acct, int amt, string desc, string counterParty) 
+        public async void NewTransaction(string id, int amt, string desc, string counterParty) 
         {
             var date = DateTime.Now.ToString("s");
             var txJson = new JObject(
@@ -68,7 +68,7 @@ namespace IncommChallengeWpf.REST
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var content = new StringContent(txJson.ToString(Newtonsoft.Json.Formatting.None), Encoding.UTF8,
                                     "application/json");
-            var result = await client.PostAsync($"{BaseURL}accounts/{acct.Id}/transactions", content);
+            var result = await client.PostAsync($"{BaseURL}accounts/{id}/transactions", content);
             if (true)
                 Debug.WriteLine("y");
             var response = result.Content.ReadAsStringAsync().Result;
